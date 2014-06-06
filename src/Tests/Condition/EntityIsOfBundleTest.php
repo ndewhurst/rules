@@ -7,7 +7,6 @@
 
 namespace Drupal\rules\Tests\Condition;
 
-use Drupal\Core\Path;
 use Drupal\system\Tests\Entity\EntityUnitTestBase;
 
 /**
@@ -33,7 +32,7 @@ class EntityIsOfBundleTest extends EntityUnitTestBase {
   public static function getInfo() {
     return [
       'name' => 'Entity is of bundle condition test',
-      'description' => 'Tests the condition.',
+      'description' => 'Tests whether an entity is of a particular [type and] bundle.',
       'group' => 'Rules conditions',
     ];
   }
