@@ -7,7 +7,6 @@
 
 namespace Drupal\rules\Tests\Condition;
 
-use Drupal\Core\Path;
 use Drupal\system\Tests\Entity\EntityUnitTestBase;
 
 /**

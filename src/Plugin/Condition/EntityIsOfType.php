@@ -7,7 +7,6 @@
 
 namespace Drupal\rules\Plugin\Condition;
 
-use Drupal\Core\TypedData\TypedData;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\rules\Context\ContextDefinition;
 use Drupal\rules\Engine\RulesConditionBase;
@@ -25,22 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @todo: Add group information from Drupal 7?
  */
 class EntityIsOfType extends RulesConditionBase {
-
-  /**
-   * Constructs an EntityIsOfType object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\TypedData\TypedDataManager $typed_data_manager
-   *   The typed data manager.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, TypedDataManager $typed_data_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $typed_data_manager);
-  }
 
   /**
    * {@inheritdoc}
@@ -62,15 +45,14 @@ class EntityIsOfType extends RulesConditionBase {
       ->setLabel(t('Entity'))
       ->setDescription(t('Specifies the entity for which to evaluate the condition.'));
 
-    // @todo: specify input mechanisms and/or constraints once configuration/UI
-    //  questions are settled.
+    // @todo: Specify input type/options once config/UI questions are settled.
+    // @todo: Restrict data input method to "direct user input" rather than allowing data selector or similar method.
     $contexts['type'] = ContextDefinition::create($typed_data_manager, 'string')
       ->setLabel(t('Type'))
-      ->setDescription(t('The type of the evaluated entity.'));
+      ->setDescription(t('The entity type specified by the condition.'));
 
     return $contexts;
   }
-
 
   /**
    * {@inheritdoc}
@@ -84,11 +66,11 @@ class EntityIsOfType extends RulesConditionBase {
    */
   public function evaluate() {
     // Load the entity to evaluate.
-    $providedEntity = $this->getContextValue('entity');
+    $provided_entity = $this->getContextValue('entity');
     // Retrieve the entity type specified as part of this condition.
     $specified_type = $this->getContextValue('type');
     // Retrieve the type of the evaluated entity.
-    $entity_type = $providedEntity->getEntityTypeId();
+    $entity_type = $provided_entity->getEntityTypeId();
     // Check to see whether the entity's type matches the specified value.
     return $entity_type == $specified_type;
   }
